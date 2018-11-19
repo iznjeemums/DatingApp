@@ -13,18 +13,20 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
-
   user: User;
   registerForm: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
-  constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder, private router: Router) { }
+
+  constructor(private authService: AuthService, private router: Router,
+    private alertify: AlertifyService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.bsConfig = {
       containerClass: 'theme-red'
-    },
+    };
     this.createRegisterForm();
   }
+
   createRegisterForm() {
     this.registerForm = this.fb.group({
       gender: ['male'],
@@ -37,6 +39,7 @@ export class RegisterComponent implements OnInit {
       confirmPassword: ['', Validators.required]
     }, {validator: this.passwordMatchValidator});
   }
+
   passwordMatchValidator(g: FormGroup) {
     return g.get('password').value === g.get('confirmPassword').value ? null : {'mismatch': true};
   }
@@ -55,7 +58,9 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
+
   cancel() {
     this.cancelRegister.emit(false);
   }
+
 }
